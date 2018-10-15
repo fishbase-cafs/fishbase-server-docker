@@ -1,0 +1,70 @@
+#!/bin/sh
+echo Please Input the Domain you want \(without www prefix\):
+read  -p "Web Domain(fishbase.cn):" wdomain
+if [ -z "${wdomain}" ];then
+	wdomain="fishbase.cn"
+fi
+echo
+echo Please Input the MySql Password you want:
+read  -p "MySQL Password(1234567890):" sqlpwd
+if [ -z "${sqlpwd}" ];then
+        sqlpwd="1234567890"
+fi
+echo
+echo Please Input the Web File Root Folder:
+read -p "Web Root(/FishBase/WebPages/fishbaseweb):" webroot
+if [ -z "${webroot}" ];then
+        webroot="/FishBase/WebPages/fishbaseweb"
+fi
+echo
+echo Please Input the Database File Root Folder:
+read -p "SQL Root(/FishBase/DataBases/mysql):" sqlroot
+if [ -z "${sqlroot}" ];then
+        sqlroot="/FishBase/DataBases/mysql"
+fi
+echo
+echo Please Input the Awstats File Root Folder:
+read -p "Awstats Root(/FishBase/Awstats):" awstatsroot
+if [ -z "${awstatsroot}" ];then
+        awstatsroot="/FishBase/Awstats"
+fi
+echo
+echo Please Input the HTTP SSL CA Folder:
+read -p "HTTPS CA:(/FishBase/Configures/SSL):" sslfolder
+if [ -z "${sslfolder}" ];then
+        sslfolder="/FishBase/Configures/SSL"
+fi
+echo
+
+
+path=$(cd `dirname $0`;pwd)
+cd $path
+
+mkdir -p "$webroot"
+mkdir -p "$sqlroot"
+mkdir -p "$awstatsroot"
+mkdir -p "$awstatsroot/Tmplog"
+mkdir -p "$awstatsroot/Logs"
+mkdir -p "$awstatsroot/Datas"
+mkdir -p "$sslfolder"
+mkdir -p "$sslfolder/live/www.$wdomain"
+
+if [ -z "$sslfolder/live/www.$wdomain/chain.pem" ];then
+	cp -n ./ca/chain.pem $sslfolder/live/www.$wdomain/chain.pem
+fi
+if [ -z "$sslfolder/live/www.$wdomain/fullchain.pem" ];then
+        cp -n ./ca/fullchain.pem $sslfolder/live/www.$wdomain/fullchain.pem
+fi
+if [ -z "$sslfolder/live/www.$wdomain/privkey.pem" ];then
+        cp -n ./ca/privkey.pem $sslfolder/live/www.$wdomain/privkey.pem
+fi
+
+cp -f ../FishBase-Dockers/docker-compose.template  ../FishBase-Dockers/docker-compose.yml
+sed -i "s|{DOMAIN}|$wdomain|g" ../FishBase-Dockers/docker-compose.yml
+sed -i "s|{SQLPWD}|$sqlpwd|g" ../FishBase-Dockers/docker-compose.yml
+sed -i "s|{webroot}|$webroot|g" ../FishBase-Dockers/docker-compose.yml
+sed -i "s|{sqlroot}|$sqlroot|g" ../FishBase-Dockers/docker-compose.yml
+sed -i "s|{awstatsroot}|$awstatsroot|g" ../FishBase-Dockers/docker-compose.yml
+sed -i "s|{sslfolder}|$sslfolder|g" ../FishBase-Dockers/docker-compose.yml
+
+

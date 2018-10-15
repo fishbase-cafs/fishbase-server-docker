@@ -1,0 +1,60 @@
+version: '2'
+services:
+  fb_apache:
+    build: ./apache-php
+    container_name: fb_apache
+    volumes:
+      - {webroot}:/var/www/html
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - fbnet
+
+  fb_mysql:
+    image: mysql:5.6
+    container_name: fb_mysql
+    volumes:
+      - {sqlroot}:/var/lib/mysql:rw
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - fbnet
+    environment:
+      - MYSQL_ROOT_PASSWORD={SQLPWD}
+    command: mysqld --lower_case_table_names=1 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --init-connect='SET NAMES utf8mb4;'
+    restart: always
+
+  fb_awstats:
+    build: ./awstats
+    container_name: fb_awstats
+    volumes:
+      - {awstatsroot}/Tmplog:/var/log/nginx:rw
+      - {awstatsroot}/Logs:/awstatslogs:rw
+      - {awstatsroot}/Datas:/awstatsdatas:rw
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - fbnet
+    environment:
+      - WEBDOMAIN={DOMAIN}
+
+  fb_nginx:
+    build: ./nginx
+    container_name: fb_nginx
+    volumes:
+      - {awstatsroot}/Tmplog:/var/log/nginx:rw
+      - {sslfolder}:/etc/letsencrypt:rw
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - fbnet
+    ports:
+      - '80:80'
+      - '443:443'
+    environment:
+      - WEBDOMAIN={DOMAIN}
+    restart: always
+
+networks:
+    fbnet:
+      driver: bridge

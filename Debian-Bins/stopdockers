@@ -1,0 +1,7 @@
+#!/bin/sh
+path=$(cd `dirname $0`;pwd)
+cd $path
+cd ../FishBase-Dockers/
+
+docker-compose down
+

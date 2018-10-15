@@ -1,0 +1,30 @@
+#!/bin/sh
+
+cd /FishBase/WebPages/fishbaseweb
+
+touch ./summary/ch.html
+
+sed -i 's/127.0.0.1/fb_mysql/g' ./includes/db.config.php
+
+sed -i 's/127.0.0.1/fb_mysql/g' ./includes/db_connect.php
+
+
+sed -i 's/connect.facebook.net/www.fishbase.cn\/gfwproxy\/connect-facebook/g' `grep "connect.facebook.net" -rl ./*`
+
+sed -i 's/google.com/google.cn/g' `grep "google.com" -rl ./*`
+
+sed -i 's/translate.google.cn/www.fishbase.cn\/gfwproxy\/translate-google/g' `grep "translate.google.cn" -rl ./*`
+
+sed -i 's/ajax.googleapis.com/ajax.lug.ustc.edu.cn/g' `grep "ajax.googleapis.com" -rl ./*`
+
+sed -i 's/fonts.googleapis.com/fonts.lug.ustc.edu.cn/g' `grep "fonts.googleapis.com" -rl ./*`
+
+sed -i 's/storage.googleapis.com/storage.lug.ustc.edu.cn/g' `grep "storage.googleapis.com" -rl ./*`
+
+sed -i 's/fonts.gstatic.com/font-gstatic.lug.ustc.edu.cn/g' `grep "font.gstatic.com" -rl ./*`
+
+sed -i 's/themes.googleusercontent.com/google-themes.lug.ustc.edu.cn/g' `grep "themes.googleusercontent.com" -rl ./*`
+
+sed -i 's/maps.googleapis.com/ditu.google.cn/g' `grep "maps.googleapis.com" -rl./*`
+
+
