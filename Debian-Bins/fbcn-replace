@@ -4,6 +4,8 @@ cd /FishBase/WebPages/fishbaseweb
 
 touch ./summary/ch.html
 
+ln -s ./listbyletter ListByLetter
+
 sed -i 's/127.0.0.1/fb_mysql/g' ./includes/db.config.php
 
 sed -i 's/127.0.0.1/fb_mysql/g' ./includes/db_connect.php
