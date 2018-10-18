@@ -5,6 +5,11 @@ if [ -z "${wdomain}" ];then
 	wdomain="fishbase.cn"
 fi
 echo
+read  -p "Global Web Domain(fishbase.org):" gdomain
+if [ -z "${gdomain}" ];then
+        gdomain="fishbase.org"
+fi
+echo
 echo Please Input the MySql Password you want:
 read  -p "MySQL Password(1234567890):" sqlpwd
 if [ -z "${sqlpwd}" ];then
@@ -48,19 +53,32 @@ mkdir -p "$awstatsroot/Logs"
 mkdir -p "$awstatsroot/Datas"
 mkdir -p "$sslfolder"
 mkdir -p "$sslfolder/live/www.$wdomain"
+mkdir -p "$sslfolder/live/www.$gdomain"
 
-if [ -z "$sslfolder/live/www.$wdomain/chain.pem" ];then
+if [ ! -f "$sslfolder/live/www.$wdomain/chain.pem" ];then
 	cp -n ./ca/chain.pem $sslfolder/live/www.$wdomain/chain.pem
 fi
-if [ -z "$sslfolder/live/www.$wdomain/fullchain.pem" ];then
+if [ ! -f "$sslfolder/live/www.$wdomain/fullchain.pem" ];then
         cp -n ./ca/fullchain.pem $sslfolder/live/www.$wdomain/fullchain.pem
 fi
-if [ -z "$sslfolder/live/www.$wdomain/privkey.pem" ];then
+if [ ! -f "$sslfolder/live/www.$wdomain/privkey.pem" ];then
         cp -n ./ca/privkey.pem $sslfolder/live/www.$wdomain/privkey.pem
 fi
 
+if [ ! -f "$sslfolder/live/www.$gdomain/chain.pem" ];then
+        cp -n ./ca/chain.pem $sslfolder/live/www.$gdomain/chain.pem
+fi
+if [ ! -f "$sslfolder/live/www.$gdomain/fullchain.pem" ];then
+        cp -n ./ca/fullchain.pem $sslfolder/live/www.$gdomain/fullchain.pem
+fi
+if [ ! -f "$sslfolder/live/www.$gdomain/privkey.pem" ];then
+        cp -n ./ca/privkey.pem $sslfolder/live/www.$gdomain/privkey.pem
+fi
+
+
 cp -f ../FishBase-Dockers/docker-compose.template  ../FishBase-Dockers/docker-compose.yml
 sed -i "s|{DOMAIN}|$wdomain|g" ../FishBase-Dockers/docker-compose.yml
+sed -i "s|{DOMAIN2}|$gdomain|g" ../FishBase-Dockers/docker-compose.yml
 sed -i "s|{SQLPWD}|$sqlpwd|g" ../FishBase-Dockers/docker-compose.yml
 sed -i "s|{webroot}|$webroot|g" ../FishBase-Dockers/docker-compose.yml
 sed -i "s|{sqlroot}|$sqlroot|g" ../FishBase-Dockers/docker-compose.yml
