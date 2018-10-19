@@ -9,7 +9,16 @@ cp -f /template.conf "/etc/nginx/conf.d/$WEBDOMAIN.conf"
 sed -i "s/{WEBDOMAIN}/$WEBDOMAIN/g" "/etc/nginx/conf.d/$WEBDOMAIN.conf"
 sed -i "s/{LOGTAG}/ /g" "/etc/nginx/conf.d/$WEBDOMAIN.conf"
 
+mkdir -p /etc/letsencrypt/live/$WEBDOMAIN
+cp -n /etc/https-ca/chain.pem /etc/letsencrypt/live/$WEBDOMAIN/chain.pem
+cp -n /etc/https-ca/fullchain.pem /etc/letsencrypt/live/$WEBDOMAIN/fullchain.pem
+cp -n /etc/https-ca/privkey.pem /etc/letsencrypt/live/$WEBDOMAIN/privkey.pem
+
+mkdir -p /etc/letsencrypt/acme
+
 /usr/local/bin/docker-run.sh > /dev/null 2>&1 &
+
+service cron start
 
 if [ -f "/usr/sbin/nginx" ]; then
   /usr/sbin/nginx -g "daemon off;" "$@"

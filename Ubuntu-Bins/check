@@ -52,27 +52,27 @@ mkdir -p "$awstatsroot/Tmplog"
 mkdir -p "$awstatsroot/Logs"
 mkdir -p "$awstatsroot/Datas"
 mkdir -p "$sslfolder"
-mkdir -p "$sslfolder/live/www.$wdomain"
-mkdir -p "$sslfolder/live/www.$gdomain"
+mkdir -p "$sslfolder/live/$wdomain"
+mkdir -p "$sslfolder/live/$gdomain"
 
-if [ ! -f "$sslfolder/live/www.$wdomain/chain.pem" ];then
-	cp -n ./ca/chain.pem $sslfolder/live/www.$wdomain/chain.pem
+if [ ! -f "$sslfolder/live/$wdomain/chain.pem" ];then
+	cp -n ./ca/chain.pem $sslfolder/live/$wdomain/chain.pem
 fi
-if [ ! -f "$sslfolder/live/www.$wdomain/fullchain.pem" ];then
-        cp -n ./ca/fullchain.pem $sslfolder/live/www.$wdomain/fullchain.pem
+if [ ! -f "$sslfolder/live/$wdomain/fullchain.pem" ];then
+        cp -n ./ca/fullchain.pem $sslfolder/live/$wdomain/fullchain.pem
 fi
-if [ ! -f "$sslfolder/live/www.$wdomain/privkey.pem" ];then
-        cp -n ./ca/privkey.pem $sslfolder/live/www.$wdomain/privkey.pem
+if [ ! -f "$sslfolder/live/$wdomain/privkey.pem" ];then
+        cp -n ./ca/privkey.pem $sslfolder/live/$wdomain/privkey.pem
 fi
 
-if [ ! -f "$sslfolder/live/www.$gdomain/chain.pem" ];then
-        cp -n ./ca/chain.pem $sslfolder/live/www.$gdomain/chain.pem
+if [ ! -f "$sslfolder/live/$gdomain/chain.pem" ];then
+        cp -n ./ca/chain.pem $sslfolder/live/$gdomain/chain.pem
 fi
-if [ ! -f "$sslfolder/live/www.$gdomain/fullchain.pem" ];then
-        cp -n ./ca/fullchain.pem $sslfolder/live/www.$gdomain/fullchain.pem
+if [ ! -f "$sslfolder/live/$gdomain/fullchain.pem" ];then
+        cp -n ./ca/fullchain.pem $sslfolder/live/$gdomain/fullchain.pem
 fi
-if [ ! -f "$sslfolder/live/www.$gdomain/privkey.pem" ];then
-        cp -n ./ca/privkey.pem $sslfolder/live/www.$gdomain/privkey.pem
+if [ ! -f "$sslfolder/live/$gdomain/privkey.pem" ];then
+        cp -n ./ca/privkey.pem $sslfolder/live/$gdomain/privkey.pem
 fi
 
 
