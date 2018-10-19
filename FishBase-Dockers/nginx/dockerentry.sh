@@ -10,9 +10,9 @@ sed -i "s/{WEBDOMAIN}/$WEBDOMAIN/g" "/etc/nginx/conf.d/$WEBDOMAIN.conf"
 sed -i "s/{LOGTAG}/ /g" "/etc/nginx/conf.d/$WEBDOMAIN.conf"
 
 mkdir -p /etc/letsencrypt/live/$WEBDOMAIN
-cp -n /etc/https-ca/chain.pem /etc/letsencrypt/live/$WEBDOMAIN/chain.pem
-cp -n /etc/https-ca/fullchain.pem /etc/letsencrypt/live/$WEBDOMAIN/fullchain.pem
-cp -n /etc/https-ca/privkey.pem /etc/letsencrypt/live/$WEBDOMAIN/privkey.pem
+ln -s /etc/https-ca/chain.pem /etc/letsencrypt/live/$WEBDOMAIN/chain.pem 2>&1
+ln -s /etc/https-ca/fullchain.pem /etc/letsencrypt/live/$WEBDOMAIN/fullchain.pem 2>&1
+ln -s /etc/https-ca/privkey.pem /etc/letsencrypt/live/$WEBDOMAIN/privkey.pem 2>&1
 
 mkdir -p /etc/letsencrypt/acme
 
