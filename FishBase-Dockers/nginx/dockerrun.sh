@@ -6,8 +6,8 @@ if [ -n "$WEB2DOMAIN" ]; then
         sed -i "s/default_server/ /g" "/etc/nginx/conf.d/$WEB2DOMAIN.conf"
         sed -i "s/{LOGTAG}/#/g" "/etc/nginx/conf.d/$WEB2DOMAIN.conf"
 	mkdir -p /etc/letsencrypt/live/$WEB2DOMAIN
-	ln -s /etc/letsencrypt/live/$WEBDOMAIN/chain.pem /etc/letsencrypt/live/$WEB2DOMAIN/chain.pem 2>&1
-	ln -s /etc/letsencrypt/live/$WEBDOMAIN/fullchain.pem /etc/letsencrypt/live/$WEB2DOMAIN/fullchain.pem 2>&1
-	ln -s /etc/letsencrypt/live/$WEBDOMAIN/privkey.pem /etc/letsencrypt/live/$WEB2DOMAIN/privkey.pem 2>&1
+	cp -n /etc/letsencrypt/live/$WEBDOMAIN/chain.pem /etc/letsencrypt/live/$WEB2DOMAIN/chain.pem 2>&1
+	cp -n /etc/letsencrypt/live/$WEBDOMAIN/fullchain.pem /etc/letsencrypt/live/$WEB2DOMAIN/fullchain.pem 2>&1
+	cp -n /etc/letsencrypt/live/$WEBDOMAIN/privkey.pem /etc/letsencrypt/live/$WEB2DOMAIN/privkey.pem 2>&1
 fi
 

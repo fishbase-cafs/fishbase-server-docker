@@ -25,6 +25,6 @@
 # m h  dom mon dow   command
 0 * * * * /https-update.sh > /dev/null 2>&1 &
 0 0 * * * /usr/sbin/nginx -s reload > /dev/null 2>&1 &
-0 0 * * 0 /https-create.sh > /dev/null 2>&1 &
+#0 0 * * 0 /https-create.sh > /dev/null 2>&1 &
 */5 * * * * date > /tmp/date5 2>&1 &
 
