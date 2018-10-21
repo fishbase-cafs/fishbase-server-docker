@@ -8,6 +8,7 @@ mkdir -p /etc/nginx/conf.d
 cp -f /template.conf "/etc/nginx/conf.d/$WEBDOMAIN.conf"
 sed -i "s/{WEBDOMAIN}/$WEBDOMAIN/g" "/etc/nginx/conf.d/$WEBDOMAIN.conf"
 sed -i "s/{LOGTAG}/ /g" "/etc/nginx/conf.d/$WEBDOMAIN.conf"
+sed -i "s/{WEBBASIC}/$WEBDOMAIN/g" "/etc/nginx/conf.d/$WEBDOMAIN.conf"
 
 mkdir -p /etc/letsencrypt/live/$WEBDOMAIN
 cp -n /etc/https-ca/chain.pem /etc/letsencrypt/live/$WEBDOMAIN/chain.pem 2>&1
