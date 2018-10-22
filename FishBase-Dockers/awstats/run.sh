@@ -22,5 +22,6 @@ do
 /bin/sh /run-before.sh $WEBDOMAIN
 /usr/bin/perl /usr/lib/cgi-bin/awstats/awstats.pl -config=$WEBDOMAIN -update
 sleep 600
+/etc/init.d/apache2 start
 done
 
