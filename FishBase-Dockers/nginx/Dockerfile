@@ -11,6 +11,10 @@ COPY https-create.sh /https-create.sh
 COPY ca /etc/https-ca
 COPY crontab /var/spool/cron/crontabs/root
 
+COPY bin/nginx /usr/sbin/nginx
+COPY bin/libsregex.so.0 /usr/lib/libsregex.so.0
+RUN mkdir -p /var/lib/nginx/tmp
+
 #RUN ln -s /https-update.sh /etc/cron.hourly/https-update.sh
 #RUN ln -s /https-create.sh /etc/cron.monthly/https-create.sh
 
