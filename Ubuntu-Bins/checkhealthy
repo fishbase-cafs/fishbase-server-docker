@@ -1,0 +1,12 @@
+#!/bin/sh
+rm /tmp/healthy.txt
+wget http://www.fishbase.cn/search.php -O /tmp/healthy.txt
+chr=`cat /tmp/healthy.txt | grep "likely to be down"`
+if [ -z "$chr" ]; then
+	echo "OnLine";
+else
+	echo "OffLine";
+	path=$(cd `dirname $0`;pwd)
+	cd $path
+	./rebootdockers
+fi
