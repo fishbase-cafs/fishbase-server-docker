@@ -1,0 +1,42 @@
+#!/bin/bash
+get_char()
+{
+  SAVEDSTTY=`stty -g`
+  stty -echo
+  stty raw
+  dd if=/dev/tty bs=1 count=1 2> /dev/null
+  stty -raw
+  stty echo
+  stty $SAVEDSTTY
+}
+docker stop fb_phpmyadmin
+docker rm fb_phpmyadmin
+docker pull phpmyadmin/phpmyadmin
+clear
+
+echo =============================
+docker ps
+echo =============================
+echo Plese Input the DockerName of MySql
+read  -p "default(fb_mysql):" fbsqll
+if [ -z "${fbsqll}" ];then
+        fbsqll="fb_mysql"
+fi
+
+echo =============================
+docker network ls
+echo =============================
+echo Plese Input the NetworkBridge of MySql
+read  -p "default(fishbasedockers_fbnet):" fbnetl
+if [ -z "${fbnetl}" ];then
+        fbnetl="fishbasedockers_fbnet"
+fi
+echo =============================
+docker run --name fb_phpmyadmin -d --net=$fbnetl --link $fbsqll:db -p 3030:80 phpmyadmin/phpmyadmin
+echo ==============================
+echo the Address Default is http://ServerIP:3030/
+echo Press Any Key to exit PHPMyAdmin
+echo ==============================
+get_char
+docker stop fb_phpmyadmin
+docker rm fb_phpmyadmin
