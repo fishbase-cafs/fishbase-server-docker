@@ -10,6 +10,7 @@ sed -i "s/{WEBDOMAIN}/$FB_WEBDOMAIN/g" "/etc/nginx/conf.d/$FB_WEBDOMAIN.conf"
 sed -i "s/{LOGTAG}/ /g" "/etc/nginx/conf.d/$FB_WEBDOMAIN.conf"
 sed -i "s/{WEBBASIC}/$FB_WEBDOMAIN/g" "/etc/nginx/conf.d/$FB_WEBDOMAIN.conf"
 sed -i "s/{WEBSERVER}/$FB_WEBSERVER/g" "/etc/nginx/conf.d/$FB_WEBDOMAIN.conf"
+sed -i "s/{LOGFILE}/access/g" "/etc/nginx/conf.d/$FB_WEBDOMAIN.conf"
 
 mkdir -p /etc/letsencrypt/live/$FB_WEBDOMAIN
 cp -n /etc/https-ca/chain.pem /etc/letsencrypt/live/$FB_WEBDOMAIN/chain.pem 2>&1
