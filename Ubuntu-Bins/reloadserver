@@ -1,0 +1,12 @@
+#!/bin/sh
+path=$(cd `dirname $0`;pwd)
+cd $path
+cd ../FishBase-Dockers/
+
+docker-compose down
+service docker stop
+docker rm $(docker ps -aq)
+rm /var/lib/docker/network/files/local-kv.db
+service docker start
+docker-compose up -d
+

@@ -10,9 +10,33 @@ services:
     networks:
       - fbnet
 
+  slb_apache:
+    build: ./apache-php
+    container_name: slb_apache
+    volumes:
+      - {webroot}:/var/www/html
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - fbnet
+
   fb_mysql:
     image: mysql:5.6
     container_name: fb_mysql
+    volumes:
+      - {sqlroot}:/var/lib/mysql:rw
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - fbnet
+    environment:
+      - MYSQL_ROOT_PASSWORD={SQLPWD}
+    command: mysqld --lower_case_table_names=1 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --init-connect='SET NAMES utf8mb4;'
+    restart: on-failure
+
+  slb_mysql:
+    image: mysql:5.6
+    container_name: slb_mysql
     volumes:
       - {sqlroot}:/var/lib/mysql:rw
       - /etc/localtime:/etc/localtime:ro
@@ -36,8 +60,10 @@ services:
     networks:
       - fbnet
     environment:
-      - WEBDOMAIN={DOMAIN}
-      - WEB2DOMAIN={DOMAIN2}
+      - FB_WEBDOMAIN={FB_DOMAIN}
+      - FB_WEB2DOMAIN={FB_DOMAIN2}
+      - SLB_WEBDOMAIN={SLB_DOMAIN}
+      - SLB_WEB2DOMAIN={SLB_DOMAIN2}
 
   fb_nginx:
     build: ./nginx
@@ -53,8 +79,12 @@ services:
       - '80:80'
       - '443:443'
     environment:
-      - WEBDOMAIN={DOMAIN}
-      - WEB2DOMAIN={DOMAIN2}
+      - FB_WEBDOMAIN={FB_DOMAIN}
+      - FB_WEB2DOMAIN={FB_DOMAIN2}
+      - FB_WEBSERVER={FB_DOCKER}
+      - SLB_WEBDOMAIN={SLB_DOMAIN}
+      - SLB_WEB2DOMAIN={SLB_DOMAIN2}
+      - SLB_WEBSERVER={SLB_DOCKER}
     restart: on-failure
 
 networks:

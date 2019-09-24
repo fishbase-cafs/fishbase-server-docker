@@ -1,14 +1,28 @@
 #!/usr/bin/env sh
 
-if [ -n "$WEB2DOMAIN" ]; then
-        cp -f /template.conf "/etc/nginx/conf.d/$WEB2DOMAIN.conf"
-        sed -i "s/{WEBDOMAIN}/$WEB2DOMAIN/g" "/etc/nginx/conf.d/$WEB2DOMAIN.conf"
-        sed -i "s/default_server/ /g" "/etc/nginx/conf.d/$WEB2DOMAIN.conf"
-        sed -i "s/{LOGTAG}/#/g" "/etc/nginx/conf.d/$WEB2DOMAIN.conf"
-	sed -i "s/{WEBBASIC}/$WEBDOMAIN/g" "/etc/nginx/conf.d/$WEB2DOMAIN.conf"
-	mkdir -p /etc/letsencrypt/live/$WEB2DOMAIN
-	cp -n /etc/letsencrypt/live/$WEBDOMAIN/chain.pem /etc/letsencrypt/live/$WEB2DOMAIN/chain.pem 2>&1
-	cp -n /etc/letsencrypt/live/$WEBDOMAIN/fullchain.pem /etc/letsencrypt/live/$WEB2DOMAIN/fullchain.pem 2>&1
-	cp -n /etc/letsencrypt/live/$WEBDOMAIN/privkey.pem /etc/letsencrypt/live/$WEB2DOMAIN/privkey.pem 2>&1
+if [ -n "$FB_WEB2DOMAIN" ]; then
+        cp -f /template.conf "/etc/nginx/conf.d/$FB_WEB2DOMAIN.conf"
+        sed -i "s/{WEBDOMAIN}/$FB_WEB2DOMAIN/g" "/etc/nginx/conf.d/$FB_WEB2DOMAIN.conf"
+        sed -i "s/default_server/ /g" "/etc/nginx/conf.d/$FB_WEB2DOMAIN.conf"
+        sed -i "s/{LOGTAG}/#/g" "/etc/nginx/conf.d/$FB_WEB2DOMAIN.conf"
+	sed -i "s/{WEBBASIC}/$FB_WEBDOMAIN/g" "/etc/nginx/conf.d/$FB_WEB2DOMAIN.conf"
+        sed -i "s/{WEBSERVER}/$FB_WEBSERVER/g" "/etc/nginx/conf.d/$FB_WEB2DOMAIN.conf"
+	mkdir -p /etc/letsencrypt/live/$FB_WEB2DOMAIN
+	cp -n /etc/letsencrypt/live/$FB_WEBDOMAIN/chain.pem /etc/letsencrypt/live/$FB_WEB2DOMAIN/chain.pem 2>&1
+	cp -n /etc/letsencrypt/live/$FB_WEBDOMAIN/fullchain.pem /etc/letsencrypt/live/$FB_WEB2DOMAIN/fullchain.pem 2>&1
+	cp -n /etc/letsencrypt/live/$FB_WEBDOMAIN/privkey.pem /etc/letsencrypt/live/$FB_WEB2DOMAIN/privkey.pem 2>&1
+fi
+
+if [ -n "$SLB_WEB2DOMAIN" ]; then
+        cp -f /template.conf "/etc/nginx/conf.d/$SLB_WEB2DOMAIN.conf"
+        sed -i "s/{WEBDOMAIN}/$SLB_WEB2DOMAIN/g" "/etc/nginx/conf.d/$SLB_WEB2DOMAIN.conf"
+        sed -i "s/default_server/ /g" "/etc/nginx/conf.d/$SLB_WEB2DOMAIN.conf"
+        sed -i "s/{LOGTAG}/#/g" "/etc/nginx/conf.d/$SLB_WEB2DOMAIN.conf"
+        sed -i "s/{WEBBASIC}/$SLB_WEBDOMAIN/g" "/etc/nginx/conf.d/$SLB_WEB2DOMAIN.conf"
+        sed -i "s/{WEBSERVER}/$SLB_WEBSERVER/g" "/etc/nginx/conf.d/$SLB_WEB2DOMAIN.conf"
+        mkdir -p /etc/letsencrypt/live/$SLB_WEB2DOMAIN
+        cp -n /etc/letsencrypt/live/$SLB_WEBDOMAIN/chain.pem /etc/letsencrypt/live/$SLB_WEB2DOMAIN/chain.pem 2>&1
+        cp -n /etc/letsencrypt/live/$SLB_WEBDOMAIN/fullchain.pem /etc/letsencrypt/live/$SLB_WEB2DOMAIN/fullchain.pem 2>&1
+        cp -n /etc/letsencrypt/live/$SLB_WEBDOMAIN/privkey.pem /etc/letsencrypt/live/$SLB_WEB2DOMAIN/privkey.pem 2>&1
 fi
 

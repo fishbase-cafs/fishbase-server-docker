@@ -1,12 +1,47 @@
 #!/bin/sh
 rm /tmp/healthy.txt
+rm /tmp/healthy.txt
 wget http://www.fishbase.cn/search.php -O /tmp/healthy.txt
 chr=`cat /tmp/healthy.txt | grep "likely to be down"`
 if [ -z "$chr" ]; then
-	echo "OnLine";
+    wget --spider -q -o /dev/null  --tries=1 -T 5 http://www.fishbase.cn/search.php
+    if [ $? -eq 0 ]
+        then
+            echo "CON OK";
+    else
+            chr="OfL";
+    fi
+
+fi
+
+wget http://www.sealifebase.cn/search.php -O /tmp/healthy2.txt
+chr2=`cat /tmp/healthy2.txt | grep "likely to be down"`
+if [ -z "$chr2" ]; then
+    wget --spider -q -o /dev/null  --tries=1 -T 5 http://www.sealifebase.cn/search.php
+    if [ $? -eq 0 ]
+        then
+            echo "CON OK";
+    else
+            chr2="OfL";
+    fi
+
+fi
+
+if [ -z "$chr" ]; then
+
+if [ -z "$chr2" ]; then
+        echo "OnLine";
+else
+        echo "OffLine";
+        path=$(cd `dirname $0`;pwd)
+        cd $path
+        ./reinitdockers
+fi
+
+
 else
 	echo "OffLine";
 	path=$(cd `dirname $0`;pwd)
 	cd $path
-	./rebootdockers
+	./reinitdockers
 fi

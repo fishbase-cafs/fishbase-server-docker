@@ -1,33 +1,67 @@
 #!/bin/sh
-echo Please Input the Domain you want \(without www prefix\):
+echo Please Input the FishBase Domain you want \(without www prefix\):
 read  -p "Web Domain(fishbase.cn):" wdomain
 if [ -z "${wdomain}" ];then
 	wdomain="fishbase.cn"
 fi
 echo
-read  -p "Global Web Domain(fishbase.org):" gdomain
+read  -p "Global FishBase Web Domain(fishbase.org):" gdomain
 if [ -z "${gdomain}" ];then
         gdomain="fishbase.org"
 fi
 echo
-echo Please Input the MySql Password you want:
+echo Please Input the FishBase MySql Password you want:
 read  -p "MySQL Password(1234567890):" sqlpwd
 if [ -z "${sqlpwd}" ];then
         sqlpwd="1234567890"
 fi
 echo
-echo Please Input the Web File Root Folder:
+echo Please Input the FishBase Web File Root Folder:
 read -p "Web Root(/FishBase/WebPages/fishbaseweb):" webroot
 if [ -z "${webroot}" ];then
         webroot="/FishBase/WebPages/fishbaseweb"
 fi
 echo
-echo Please Input the Database File Root Folder:
+echo Please Input the FishBase Database File Root Folder:
 read -p "SQL Root(/FishBase/DataBases/mysql):" sqlroot
 if [ -z "${sqlroot}" ];then
         sqlroot="/FishBase/DataBases/mysql"
 fi
 echo
+
+#====SLB
+echo Please Input the Sealifebase Domain you want \(without www prefix\),Empty is Disable SLB:
+read  -p "Web Domain(sealifebase.cn):" wdomain
+if [ -z "${wdomain2}" ];then
+        wdomain2=""
+fi
+echo
+read  -p "Global SealifeBase Web Domain(sealifebase.org):" gdomain
+if [ -z "${gdomain2}" ];then
+        gdomain2="sealifebase.org"
+fi
+echo
+echo Please Input the SealifeBase MySql Password you want:
+read  -p "MySQL Password(1234567890):" sqlpwd
+if [ -z "${sqlpwd2}" ];then
+        sqlpwd2="1234567890"
+fi
+echo
+echo Please Input the SealifeBase Web File Root Folder:
+read -p "Web Root(/FishBase/WebPages/sealifebaseweb):" webroot
+if [ -z "${webroot2}" ];then
+        webroot2="/FishBase/WebPages/sealifebaseweb"
+fi
+echo
+echo Please Input the Sealifebase Database File Root Folder:
+read -p "SQL Root(/FishBase/DataBases/mysql2):" sqlroot
+if [ -z "${sqlroot2}" ];then
+        sqlroot2="/FishBase/DataBases/mysql2"
+fi
+echo
+#====SLBEND
+
+
 echo Please Input the Awstats File Root Folder:
 read -p "Awstats Root(/FishBase/Awstats):" awstatsroot
 if [ -z "${awstatsroot}" ];then
@@ -55,6 +89,11 @@ mkdir -p "$sslfolder"
 mkdir -p "$sslfolder/live/$wdomain"
 mkdir -p "$sslfolder/live/$gdomain"
 
+mkdir -p "$webroot2"
+mkdir -p "$sqlroot2"
+mkdir -p "$sslfolder/live/$wdomain2"
+mkdir -p "$sslfolder/live/$gdomain2"
+
 if [ ! -f "$sslfolder/live/$wdomain/chain.pem" ];then
 	cp -n ./ca/chain.pem $sslfolder/live/$wdomain/chain.pem
 fi
@@ -75,14 +114,44 @@ if [ ! -f "$sslfolder/live/$gdomain/privkey.pem" ];then
         cp -n ./ca/privkey.pem $sslfolder/live/$gdomain/privkey.pem
 fi
 
+if [ ! -f "$sslfolder/live/$wdomain2/chain.pem" ];then
+        cp -n ./ca/chain.pem $sslfolder/live/$wdomain2/chain.pem
+fi
+if [ ! -f "$sslfolder/live/$wdomain2/fullchain.pem" ];then
+        cp -n ./ca/fullchain.pem $sslfolder/live/$wdomain2/fullchain.pem
+fi
+if [ ! -f "$sslfolder/live/$wdomain2/privkey.pem" ];then
+        cp -n ./ca/privkey.pem $sslfolder/live/$wdomain2/privkey.pem
+fi
+
+if [ ! -f "$sslfolder/live/$gdomain2/chain.pem" ];then
+        cp -n ./ca/chain.pem $sslfolder/live/$gdomain2/chain.pem
+fi
+if [ ! -f "$sslfolder/live/$gdomain2/fullchain.pem" ];then
+        cp -n ./ca/fullchain.pem $sslfolder/live/$gdomain2/fullchain.pem
+fi
+if [ ! -f "$sslfolder/live/$gdomain2/privkey.pem" ];then
+        cp -n ./ca/privkey.pem $sslfolder/live/$gdomain2/privkey.pem
+fi
 
 cp -f ../FishBase-Dockers/docker-compose.template  ../FishBase-Dockers/docker-compose.yml
-sed -i "s|{DOMAIN}|$wdomain|g" ../FishBase-Dockers/docker-compose.yml
-sed -i "s|{DOMAIN2}|$gdomain|g" ../FishBase-Dockers/docker-compose.yml
-sed -i "s|{SQLPWD}|$sqlpwd|g" ../FishBase-Dockers/docker-compose.yml
-sed -i "s|{webroot}|$webroot|g" ../FishBase-Dockers/docker-compose.yml
-sed -i "s|{sqlroot}|$sqlroot|g" ../FishBase-Dockers/docker-compose.yml
+sed -i "s|{FB_DOMAIN}|$wdomain|g" ../FishBase-Dockers/docker-compose.yml
+sed -i "s|{FB_DOMAIN2}|$gdomain|g" ../FishBase-Dockers/docker-compose.yml
+sed -i "s|{FB_SQLPWD}|$sqlpwd|g" ../FishBase-Dockers/docker-compose.yml
+sed -i "s|{fb_webroot}|$webroot|g" ../FishBase-Dockers/docker-compose.yml
+sed -i "s|{fb_sqlroot}|$sqlroot|g" ../FishBase-Dockers/docker-compose.yml
 sed -i "s|{awstatsroot}|$awstatsroot|g" ../FishBase-Dockers/docker-compose.yml
 sed -i "s|{sslfolder}|$sslfolder|g" ../FishBase-Dockers/docker-compose.yml
 
+sed -i "s|{SLB_DOMAIN}|$wdomain2|g" ../FishBase-Dockers/docker-compose.yml
+sed -i "s|{SLB_DOMAIN2}|$gdomain2|g" ../FishBase-Dockers/docker-compose.yml
+sed -i "s|{SLB_SQLPWD}|$sqlpwd2|g" ../FishBase-Dockers/docker-compose.yml
+sed -i "s|{slb_webroot}|$webroot2|g" ../FishBase-Dockers/docker-compose.yml
+sed -i "s|{slb_sqlroot}|$sqlroot2|g" ../FishBase-Dockers/docker-compose.yml
 
+sed -i "s|{FB_DOCKER}|fb_apache|g" ../FishBase-Dockers/docker-compose.yml
+if [ ! -n "$wdomain2" ]; then
+	sed -i "s|{SLB_DOCKER}|slb_apache|g" ../FishBase-Dockers/docker-compose.yml
+else
+	sed -i "s|{SLB_DOCKER}|fb_apache|g" ../FishBase-Dockers/docker-compose.yml
+fi
