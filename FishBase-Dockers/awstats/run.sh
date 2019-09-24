@@ -17,7 +17,6 @@ else
 	sed -i "s/{WEBREG2}/$FB_WEBS2/g" "/usr/lib/cgi-bin/awstats/awstats.$FB_WEBDOMAIN.conf"
 fi
 
-if [ ! -n "$SLB_WEBDOMAIN" ]; then
 SLB_WEBS1=`echo $SLB_WEBDOMAIN | sed -e "s/\./\\\\\\\\\\\\\\\\\\\\\./g"`
 cp -f /awstats.template.conf "/usr/lib/cgi-bin/awstats/awstats.$SLB_WEBDOMAIN.conf"
 sed -i "s/{WEBNAME}/$SLB_WEBDOMAIN/g" "/usr/lib/cgi-bin/awstats/awstats.$SLB_WEBDOMAIN.conf"
@@ -31,7 +30,6 @@ else
         SLB_WEBS2=`echo $SLB_WEB2DOMAIN | sed -e "s/\./\\\\\\\\\\\\\\\\\\\\\./g"`
         sed -i "s/{WEB2SITE}/$SLB_WEB2DOMAIN/g" "/usr/lib/cgi-bin/awstats/awstats.$SLB_WEBDOMAIN.conf"
         sed -i "s/{WEBREG2}/$SLB_WEBS2/g" "/usr/lib/cgi-bin/awstats/awstats.$SLB_WEBDOMAIN.conf"
-fi
 fi
 
 while [ true ] ;

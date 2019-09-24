@@ -4,7 +4,7 @@ services:
     build: ./apache-php
     container_name: fb_apache
     volumes:
-      - {webroot}:/var/www/html
+      - {fb_webroot}:/var/www/html
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     networks:
@@ -14,7 +14,7 @@ services:
     build: ./apache-php
     container_name: slb_apache
     volumes:
-      - {webroot}:/var/www/html
+      - {slb_webroot}:/var/www/html
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     networks:
@@ -24,13 +24,13 @@ services:
     image: mysql:5.6
     container_name: fb_mysql
     volumes:
-      - {sqlroot}:/var/lib/mysql:rw
+      - {fb_sqlroot}:/var/lib/mysql:rw
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     networks:
       - fbnet
     environment:
-      - MYSQL_ROOT_PASSWORD={SQLPWD}
+      - MYSQL_ROOT_PASSWORD={FB_SQLPWD}
     command: mysqld --lower_case_table_names=1 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --init-connect='SET NAMES utf8mb4;'
     restart: on-failure
 
@@ -38,13 +38,13 @@ services:
     image: mysql:5.6
     container_name: slb_mysql
     volumes:
-      - {sqlroot}:/var/lib/mysql:rw
+      - {slb_sqlroot}:/var/lib/mysql:rw
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     networks:
       - fbnet
     environment:
-      - MYSQL_ROOT_PASSWORD={SQLPWD}
+      - MYSQL_ROOT_PASSWORD={SLB_SQLPWD}
     command: mysqld --lower_case_table_names=1 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --init-connect='SET NAMES utf8mb4;'
     restart: on-failure
 
